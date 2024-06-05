@@ -2,6 +2,7 @@ package cimgui
 
 import (
 	"github.com/jurgen-kluft/ccode/denv"
+	cglfw "github.com/jurgen-kluft/cglfw/package"
 	cunittest "github.com/jurgen-kluft/cunittest/package"
 )
 
@@ -9,13 +10,16 @@ import (
 func GetPackage() *denv.Package {
 	// Dependencies
 	unittestpkg := cunittest.GetPackage()
+	glfwpkg := cglfw.GetPackage()
 
 	// The main (cimgui) package
 	mainpkg := denv.NewPackage("cimgui")
 	mainpkg.AddPackage(unittestpkg)
+	mainpkg.AddPackage(glfwpkg)
 
 	// 'cimgui' library
 	mainlib := denv.SetupDefaultCppLibProject("cimgui", "github.com\\jurgen-kluft\\cimgui")
+	mainlib.Dependencies = append(mainlib.Dependencies, glfwpkg.GetMainLib())
 
 	if denv.OS == "windows" {
 		//mainlib.AddDefine("VK_USE_PLATFORM_WIN32_KHR")
@@ -30,6 +34,7 @@ func GetPackage() *denv.Package {
 	// unittest project
 	maintest := denv.SetupDefaultCppTestProject("cimgui"+"test", "github.com\\jurgen-kluft\\cimgui")
 	maintest.Dependencies = append(maintest.Dependencies, unittestpkg.GetMainLib())
+	maintest.Dependencies = append(maintest.Dependencies, glfwpkg.GetMainLib())
 	maintest.Dependencies = append(maintest.Dependencies, mainlib)
 
 	mainpkg.AddUnittest(maintest)
