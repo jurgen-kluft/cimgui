@@ -1,5 +1,5 @@
-#ifndef __TEST_ALLOCATOR_H__
-#define __TEST_ALLOCATOR_H__
+#ifndef __CIMGUI_TEST_ALLOCATOR_H__
+#define __CIMGUI_TEST_ALLOCATOR_H__
 #include "ccore/c_target.h"
 #ifdef USE_PRAGMA_ONCE
 #    pragma once

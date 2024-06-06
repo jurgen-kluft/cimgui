@@ -35,7 +35,7 @@ Index of this file:
 #ifndef IMGUI_DISABLE
 #include "cimgui/imgui_internal.h"
 #ifdef IMGUI_ENABLE_FREETYPE
-#include "imgui_freetype.h"
+#include "cimgui/imgui_freetype.h"
 #endif
 
 #include <stdio.h>      // vsnprintf, sscanf, printf
