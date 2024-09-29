@@ -21,11 +21,11 @@ func GetPackage() *denv.Package {
 	mainlib := denv.SetupDefaultCppLibProject("cimgui", "github.com\\jurgen-kluft\\cimgui")
 	mainlib.Dependencies = append(mainlib.Dependencies, glfwpkg.GetMainLib())
 
-	if denv.OS == "windows" {
+	if denv.IsWindows() {
 		//mainlib.AddDefine("VK_USE_PLATFORM_WIN32_KHR")
-	} else if denv.OS == "darwin" {
+	} else if denv.IsMacOS() {
 		//mainlib.AddDefine("VK_USE_PLATFORM_MACOS_MVK")
-	} else if denv.OS == "linux" {
+	} else if denv.IsLinux() {
 		//mainlib.AddDefine("VK_USE_PLATFORM_XLIB_KHR")
 	}
 
