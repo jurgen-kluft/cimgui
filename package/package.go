@@ -13,12 +13,12 @@ func GetPackage() *denv.Package {
 	glfwpkg := cglfw.GetPackage()
 
 	// The main (cimgui) package
-	mainpkg := denv.NewPackage("cimgui")
+	mainpkg := denv.NewPackage("github.com\\jurgen-kluft", "cimgui")
 	mainpkg.AddPackage(unittestpkg)
 	mainpkg.AddPackage(glfwpkg)
 
 	// 'cimgui' library
-	mainlib := denv.SetupCppLibProject("cimgui", "github.com\\jurgen-kluft\\cimgui")
+	mainlib := denv.SetupCppLibProject(mainpkg, "cimgui")
 	mainlib.AddDependencies(glfwpkg.GetMainLib()...)
 
 	if denv.IsWindows() {
@@ -32,10 +32,10 @@ func GetPackage() *denv.Package {
 	mainpkg.AddMainLib(mainlib)
 
 	// unittest project
-	maintest := denv.SetupDefaultCppTestProject("cimgui"+"test", "github.com\\jurgen-kluft\\cimgui")
+	maintest := denv.SetupCppTestProject(mainpkg, "cimgui"+"test")
 	maintest.AddDependencies(unittestpkg.GetMainLib()...)
 	maintest.AddDependencies(glfwpkg.GetMainLib()...)
-	maintest.Dependencies = append(maintest.Dependencies, mainlib)
+	maintest.AddDependency(mainlib)
 
 	mainpkg.AddUnittest(maintest)
 
