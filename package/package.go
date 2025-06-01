@@ -6,19 +6,25 @@ import (
 	cunittest "github.com/jurgen-kluft/cunittest/package"
 )
 
-// GetPackage returns the package object of 'cimgui'
+const (
+	repo_path = "github.com\\jurgen-kluft"
+	repo_name = "cimgui"
+)
+
 func GetPackage() *denv.Package {
-	// Dependencies
-	unittestpkg := cunittest.GetPackage()
+	name := repo_name
+
+	// dependencies
+	cunittestpkg := cunittest.GetPackage()
 	glfwpkg := cglfw.GetPackage()
 
-	// The main (cimgui) package
-	mainpkg := denv.NewPackage("github.com\\jurgen-kluft", "cimgui")
-	mainpkg.AddPackage(unittestpkg)
+	// main package
+	mainpkg := denv.NewPackage(repo_path, repo_name)
+	mainpkg.AddPackage(cunittestpkg)
 	mainpkg.AddPackage(glfwpkg)
 
-	// 'cimgui' library
-	mainlib := denv.SetupCppLibProject(mainpkg, "cimgui")
+	// main library
+	mainlib := denv.SetupCppLibProject(mainpkg, name)
 	mainlib.AddDependencies(glfwpkg.GetMainLib()...)
 
 	if denv.IsWindows() {
@@ -29,15 +35,18 @@ func GetPackage() *denv.Package {
 		//mainlib.AddDefine("VK_USE_PLATFORM_XLIB_KHR")
 	}
 
-	mainpkg.AddMainLib(mainlib)
+	// test library
+	testlib := denv.SetupCppTestLibProject(mainpkg, name)
+	testlib.AddDependencies(glfwpkg.GetTestLib()...)
+	testlib.AddDependencies(cunittestpkg.GetTestLib()...)
 
 	// unittest project
-	maintest := denv.SetupCppTestProject(mainpkg, "cimgui"+"test")
-	maintest.AddDependencies(unittestpkg.GetMainLib()...)
-	maintest.AddDependencies(glfwpkg.GetMainLib()...)
-	maintest.AddDependency(mainlib)
+	maintest := denv.SetupCppTestProject(mainpkg, name)
+	maintest.AddDependencies(cunittestpkg.GetMainLib()...)
+	maintest.AddDependency(testlib)
 
+	mainpkg.AddMainLib(mainlib)
+	mainpkg.AddTestLib(testlib)
 	mainpkg.AddUnittest(maintest)
-
 	return mainpkg
 }
