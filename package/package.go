@@ -25,7 +25,7 @@ func GetPackage() *denv.Package {
 
 	// main library
 	mainlib := denv.SetupCppLibProject(mainpkg, name)
-	mainlib.AddDependencies(glfwpkg.GetMainLib()...)
+	mainlib.AddDependencies(glfwpkg.GetMainLib())
 
 	if denv.IsWindows() {
 		//mainlib.AddDefine("VK_USE_PLATFORM_WIN32_KHR")
@@ -37,12 +37,12 @@ func GetPackage() *denv.Package {
 
 	// test library
 	testlib := denv.SetupCppTestLibProject(mainpkg, name)
-	testlib.AddDependencies(glfwpkg.GetTestLib()...)
-	testlib.AddDependencies(cunittestpkg.GetTestLib()...)
+	testlib.AddDependencies(glfwpkg.GetTestLib())
+	testlib.AddDependencies(cunittestpkg.GetTestLib())
 
 	// unittest project
 	maintest := denv.SetupCppTestProject(mainpkg, name)
-	maintest.AddDependencies(cunittestpkg.GetMainLib()...)
+	maintest.AddDependencies(cunittestpkg.GetMainLib())
 	maintest.AddDependency(testlib)
 
 	mainpkg.AddMainLib(mainlib)
