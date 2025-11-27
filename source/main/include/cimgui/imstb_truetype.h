@@ -281,7 +281,7 @@
 //  See "tests/truetype_demo_win32.c" for a complete version.
 #if 0
 #define STB_TRUETYPE_IMPLEMENTATION  // force following include to generate implementation
-#include "cimgui/stb_truetype.h"
+#include "stb_truetype.h"
 
 unsigned char ttf_buffer[1<<20];
 unsigned char temp_bitmap[512*512];
@@ -332,7 +332,7 @@ void my_stbtt_print(float x, float y, char *text)
 #if 0
 #include <stdio.h>
 #define STB_TRUETYPE_IMPLEMENTATION  // force following include to generate implementation
-#include "cimgui/stb_truetype.h"
+#include "stb_truetype.h"
 
 char ttf_buffer[1<<25];
 
@@ -4516,8 +4516,8 @@ static int stbtt__compute_crossings_x(float x, float y, int nverts, stbtt_vertex
             q2[0] = (float)x2;
             q2[1] = (float)y2;
             if (equal(q0,q1) || equal(q1,q2)) {
-               x0 = (int)verts[i-1].x;
-               y0 = (int)verts[i-1].y;
+               x0 = (int)verts[i-1].x; //-V1048
+               y0 = (int)verts[i-1].y; //-V1048
                x1 = (int)verts[i  ].x;
                y1 = (int)verts[i  ].y;
                if (y > STBTT_min(y0,y1) && y < STBTT_max(y0,y1) && x > STBTT_min(x0,x1)) {
